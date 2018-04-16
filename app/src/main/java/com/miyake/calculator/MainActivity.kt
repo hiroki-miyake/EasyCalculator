@@ -32,7 +32,7 @@ class MainActivity : Activity() {
 
             // タイトル
             textView {
-                setText("Calculator")
+                setText("Easy Calculator")
                 textColor = Color.BLACK
                 textSize = 30f
             }.lparams {
@@ -156,9 +156,20 @@ class MainActivity : Activity() {
 
                                                         // 除算
                                                         3 -> {
+                                                            if (saveNumber == defaultNumber) saveNumber = number
+                                                            if (divFlg && !equalFlg){
+                                                                saveNumber /= number
+                                                                number = 0
+                                                            }
                                                             symbolClick()
-                                                            if (saveNumber == defaultNumber || number == defaultNumber) saveNumber = number
-                                                            mainView!!.hint = saveNumber.toString()
+
+                                                            if(saveNumber > 9999999999999){
+                                                                mainView!!.setText("error")
+                                                            }else {
+                                                                mainView!!.setText(saveNumber.toString())
+                                                                mainView!!.hint = saveNumber.toString()
+                                                            }
+
                                                             divFlg = true
                                                             symbolFlg = true
                                                         }
@@ -195,9 +206,20 @@ class MainActivity : Activity() {
 
                                                     // 乗算
                                                     3 -> {
+                                                        if (saveNumber == defaultNumber) saveNumber = number
+                                                        if (mulFlg && !equalFlg){
+                                                            saveNumber *= number
+                                                            number = 0
+                                                        }
                                                         symbolClick()
-                                                        if (saveNumber == defaultNumber || number == defaultNumber) saveNumber = number
-                                                        mainView!!.hint = saveNumber.toString()
+
+                                                        if(saveNumber > 9999999999999){
+                                                            mainView!!.setText("error")
+                                                        }else {
+                                                            mainView!!.setText(saveNumber.toString())
+                                                            mainView!!.hint = saveNumber.toString()
+                                                        }
+
                                                         mulFlg = true
                                                         symbolFlg = true
                                                     }
@@ -233,10 +255,20 @@ class MainActivity : Activity() {
 
                                                     // 減算
                                                     3 -> {
+                                                        if (saveNumber == defaultNumber) saveNumber = number
+                                                        if (subFlg && !equalFlg){
+                                                            saveNumber -= number
+                                                            number = 0
+                                                        }
                                                         symbolClick()
-                                                        if (saveNumber == defaultNumber || number == defaultNumber) saveNumber = number
-                                                        if (subFlg)
-                                                        mainView!!.hint = saveNumber.toString()
+
+                                                        if(saveNumber > 9999999999999){
+                                                            mainView!!.setText("error")
+                                                        }else {
+                                                            mainView!!.setText(saveNumber.toString())
+                                                            mainView!!.hint = saveNumber.toString()
+                                                        }
+
                                                         subFlg = true
                                                         symbolFlg = true
                                                     }
@@ -272,13 +304,19 @@ class MainActivity : Activity() {
 
                                                     // 加算
                                                     3 -> {
-                                                        if (addFlg)  saveNumber += number
-
+                                                        if (saveNumber == defaultNumber) saveNumber = number
+                                                        if (addFlg && !equalFlg)  {
+                                                            saveNumber += number
+                                                            number = 0
+                                                        }
                                                         symbolClick()
-//                                                        if (saveNumber == defaultNumber || number == defaultNumber) saveNumber = number else {}
-                                                        if (saveNumber == defaultNumber) saveNumber = number else {}
 
-                                                        mainView!!.hint = saveNumber.toString()
+                                                        if(saveNumber > 9999999999999){
+                                                            mainView!!.setText("error")
+                                                        }else {
+                                                            mainView!!.setText(saveNumber.toString())
+                                                            mainView!!.hint = saveNumber.toString()
+                                                        }
 
                                                         addFlg = true
                                                         symbolFlg = true
@@ -306,7 +344,7 @@ class MainActivity : Activity() {
                                                         if (mulFlg) saveNumber *= number
                                                         if (divFlg) saveNumber /= number
 
-                                                        if(saveNumber > 999999999999999){
+                                                        if(saveNumber > 99999999999999){
                                                             mainView!!.setText("error")
                                                         }else {
                                                             mainView!!.setText(saveNumber.toString())
@@ -354,7 +392,7 @@ class MainActivity : Activity() {
         }
     }
 
-    // 連続して記号が押された場合
+    // フラグが複数立っていた場合、フラグを初期化し押した記号フラグのみたてる
     fun symbolClick(){
 
         // フラグの初期化を行う
